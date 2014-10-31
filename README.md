@@ -1,7 +1,7 @@
 LZW算法演示网站
 =================================
 LZW Compression Demostration Site
-无需后台 With no needed
+无需后台 With no runtime needed
 
 # 使用的库 referred Librarys
 * uupaa/UTF8.js
