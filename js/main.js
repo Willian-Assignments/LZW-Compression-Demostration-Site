@@ -17,7 +17,7 @@ var uploadOrigin = function(event){
 
 		//Not text File or is
 		var fileString = theFile.target.result;
-		originalString = fileString;
+		setOriginalText(fileString);
 		//if (file.type.match('text.*')) {
 			
 			
@@ -31,7 +31,7 @@ var uploadCompressed = function(event){
 	reader.readAsText(file);
 
 	reader.onload = function(theFile) {
-		alert(fileString);
+		//alert(fileString);
 		//Not text File or is
 		var fileString = theFile.target.result;
 		compressedString = fileString;
@@ -55,7 +55,10 @@ var showUploadsAndBindEvents = function(){
 	});
 }
 function setOriginalText(text){
-	originalString = text;
+	originalString = UTF8.fromString(text);
+}
+function getOriginalText(){
+	return UTF8.toString(originalString);
 }
 function setCompressedText(text){
 	compressedString = text;
@@ -73,7 +76,7 @@ function updateNumber(target){
 }
 function updateOriginalText(){
 	var field = $("#original-text textarea")[0];
-	var loadString = originalString;
+	var loadString = getOriginalText();
 	if (loadString.length > 1000) {
 		loadString = loadString.slice(0,1000);
 	};
@@ -83,7 +86,7 @@ function updateOriginalText(){
 }
 function updatedOriginalChar(){
 	var field = $("#original-text textarea")[1];
-	var loadString = originalString;
+	var loadString = getOriginalText();
 	if (loadString.length > 1000) {
 		loadString = loadString.slice(0,1000);
 	};
@@ -146,13 +149,23 @@ var decompress = function(){
 		}
     });
 }
-var save = function(){
-	var aFileParts = [compressedString];
-	var bb = new Blob(aFileParts,{type : 'text/lwx'});
-	saveAs(bb, "compressedString.lwx");
+var saveFileAs = function(contentString,fileName,MIME){
+	if (typeof MIME == "undefined") {
+		MIME = 'text';
+	};
+	var aFileParts = [contentString];
+	var bb = new Blob(aFileParts,{type : MIME});
+	saveAs(bb, fileName);
+}
+var saveCmp = function(e){
+	saveFileAs(compressedString,'compressedString.lwx','text/lwx')
+}
+var saveOri = function(e){
+	saveFileAs(getOriginalText,'original.txt','text')
 }
 var bindButtonEvents = function(){
-	$("#save-button").bind('click', save);
+	$("#save-ori-button").bind('click', saveOri);
+	$("#save-cmp-button").bind('click', saveCmp);
 	$("#compress-button").bind('click', compress);
 	$("#decompress-button").bind('click', decompress);
 };
@@ -160,12 +173,13 @@ if(window.File && window.FileReader && window.FileList && window.Blob){
 	showUploadsAndBindEvents();
 }
 if(!(Blob && Blob != null) ){
-	$("#save-button").remove();
+	$("#save-ori-button").remove();
+	$("#save-cmp-button").remove();
 }
 var detectChangeOfText = function(){
 	var field = $("#original-text > textarea");
 	var changeStr = function(event) {
-		originalString = $(field).val();
+		setOriginalText( $(field).val());
 		updateNumber('ori');
 		updatedOriginalChar();
 	}

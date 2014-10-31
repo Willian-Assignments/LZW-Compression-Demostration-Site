@@ -1,3 +1,11 @@
+/* js-charCode-display.js
+ * CharCode Concersion
+ * 2014-11-1
+ *
+ * By Willian Zhang, https://github.com/Willian-Zhang
+ * License: MIT
+ *   
+ */
 String.prototype.getCharArrayInOneLine = function (withPrefix,isUTF16){
 	if (typeof withPrefix == "undefined" || withPrefix == true) {
 		withPrefix = '0x';
