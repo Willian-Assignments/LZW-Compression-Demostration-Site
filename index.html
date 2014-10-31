@@ -12,6 +12,9 @@
         <script src="js/jquery-1.11.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/lzw-async.min.js"></script>
+        <script src="js/Blob.js"></script>
+        <script src="js/FileSaver.min.js"></script>
+        <script src="js/js-charCode-display.js"></script>
         <!--[if lt IE 9]>
             <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -19,24 +22,45 @@
 	</head>
 	<body>
       <div id="main" class="container">
+        <h1>LZW 算法</h1>
         <div class="alert alert-success" role="alert" style="display:none">
           <a href="#" class="alert-link">...</a>
         </div>
+
+        <div class="row">
+         <div class="col-md-1" >
+            进度：
+          </div>
+          <div class="col-md-11" >
+            <div class="progress">
+                <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; transition: width 0s linear;">
+                  0%
+                </div>
+              </div>
+          </div>
+        </div><!-- Row2 -->
+
         <div class="row">
           <div class="col-md-6">
               <div class="panel panel-info" id="original">
                 <div class="panel-heading">
                   <h3 class="panel-title">
                   <span class="glyphicon glyphicon-pencil"></span>
-                  未压缩内容
-                    &nbsp;<span class="label label-default">输入 <span class="badge" id="ori-Count">0</span> </span>
+                  未压缩内容&nbsp;
+                    <span class="label label-info">字符数： <span class="badge" id="ori-Count">0</span> </span>
                     
                   </h3>
                 </div>
                 <div class="panel-body">
                     
                     <div class="form-group" id="original-text">
-                      <textarea class="form-control"></textarea>
+                      <textarea class="form-control" rows="5" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;"></textarea>
+                      <div class="panel panel-info panel-table" style="max-height:100px; border-top-left-radius: 0;border-top-right-radius: 0; border-top: 0;">
+                        <table class="table table-hover table-condensed" id="original-table"></table>
+                      </div>
+                    </div>
+                    <div class="btn-group  navbar-right">
+                      <button type="button" class="btn btn-success" id="compress-button">压缩</button>
                     </div>
                 </div>
               </div>
@@ -46,28 +70,27 @@
                 <div class="panel-heading">
                   <h3 class="panel-title">
                   <span class="glyphicon glyphicon-compressed"></span>
-                  压缩内容
-                    &nbsp;<span class="label label-default">未加载</span>
+                  压缩内容&nbsp;
+                    <span class="label label-success" id="cmp-stat">未加载</span>&nbsp;&nbsp;
+                    <span class="label label-warning" id="ratio"></span>
                   </h3>
                 </div>
                 <div class="panel-body">
                   
-                    <div class="form-group"  id="compressed-text">
-                      <textarea class="form-control" rows="3"></textarea>
-                    </div>                   
+                    <div class="panel panel-default panel-table" >
+                      <table class="table table-hover table-condensed" id="compressed-table"></table>
+                    </div>
 
+                    <div class="btn-group navbar-right" id="cmp-btn-grp">
+                      <button type="button" class="btn btn-default" id="save-button" disabled="true">保存</button>
+                      <button type="button" class="btn btn-info" id="decompress-button" disabled="true">解压缩</button>
+                    </div>
                 </div>
               </div>
           </div>
 
         </div><!-- Row -->
-        <div class="row">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-              0%
-            </div>
-          </div>
-        </div><!-- Row2 -->
+        
       </div><!-- Contain -->
       <input type="file" id="file" style="display:none;" single />
       <script src="js/main.js"></script>
